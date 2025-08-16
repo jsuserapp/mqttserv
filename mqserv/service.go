@@ -1,7 +1,6 @@
 package mqserv
 
 import (
-	"fmt"
 	"os"
 	"runtime"
 	"strings"
@@ -88,9 +87,9 @@ func RunService() {
 		DisplayName:      "mqtt broker service",
 		Description:      "This is an mqtt broker in 1883",
 		WorkingDirectory: absPath,
-		Option: service.KeyValue{
-			"SystemdScript": fmt.Sprintf("Restart=always\nRestartSec=10s"),
-		},
+		//Option: service.KeyValue{
+		//	"SystemdScript": fmt.Sprintf("Restart=always\nRestartSec=10s"),
+		//},
 	}
 	ju.LogGreen(serviceName, "start success")
 	// Interface 接口
