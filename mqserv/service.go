@@ -88,7 +88,6 @@ func RunService() {
 		Description:      "This is an mqtt broker in 1883",
 		WorkingDirectory: absPath,
 	}
-	ju.LogGreen(serviceName, "start success")
 	// Interface 接口
 	prg := &program{
 		logFile: fileDb,
@@ -99,6 +98,12 @@ func RunService() {
 		return
 	}
 
+	if len(os.Args) == 2 {
+		err = service.Control(s, os.Args[1])
+		ju.LogError(err)
+		return // 确保在执行控制命令后退出
+	}
+
 	errs := make(chan error, 5)
 	go func() {
 		for {
@@ -107,13 +112,11 @@ func RunService() {
 		}
 	}()
 
-	if len(os.Args) == 2 {
-		//如果有命令则执行
-		err = service.Control(s, os.Args[1])
-		ju.LogError(err)
+	// 系统调用会运行到这里，运行服务
+	err = s.Run()
+	if ju.LogSucceed(err) {
+		ju.LogGreen(serviceName, "start success")
 	} else {
-		// 这里并不是调用的 program 的 run, 而是服务的 run, 它在内部会启动服务, 执行 Start
-		err = s.Run()
-		ju.LogError(err)
+		ju.LogRed(serviceName, "start failed", err.Error())
 	}
 }
