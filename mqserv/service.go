@@ -87,9 +87,9 @@ func RunService() {
 		DisplayName:      "mqtt broker service",
 		Description:      "This is an mqtt broker in 1883",
 		WorkingDirectory: absPath,
-		//Option: service.KeyValue{
-		//	"SystemdScript": fmt.Sprintf("Restart=always\nRestartSec=10s"),
-		//},
+		Option: service.KeyValue{
+			"RestartSec": 20,
+		},
 	}
 	ju.LogGreen(serviceName, "start success")
 	// Interface 接口
